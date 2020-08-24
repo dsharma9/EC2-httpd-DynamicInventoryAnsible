@@ -1,0 +1,38 @@
+---
+- name: Launching several component of ec2
+  hosts: localhost
+  vars_files:
+     - /root/ansible-playbook/ec2/ec2-vars.txt
+     - /root/ansible-playbook/ec2/access.txt
+  tasks:
+  - name: Creating EC2-Security_Group
+    ec2_group:
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ region }}"
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        description: "{{ desc_of_sg }}"
+        name: "{{ sg_name }}"
+        state: "{{ sg_state }}"
+        tags:
+           name: web_server
+           env: dev
+        rules:
+          - proto: tcp
+            ports:
+              - 80
+              - 8080
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all on port 8080 and 80.
+          - proto: tcp
+            from_port: 80
+            to_port: 8080
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+    register: ec2
+
+  - debug:
+       var: ec2

@@ -1,0 +1,20 @@
+---
+- name: Capturing output in register and printing via debug module
+  hosts: web
+  vars:
+
+  tasks:
+   - command: date 
+     register: date_output
+
+   - name: Checking command output 
+     debug: 
+       msg: The command executed is {{ date_output.cmd }}
+   - debug: 
+       msg: The command output is  {{ date_output.stdout }}
+   - debug: 
+       msg: The command start time is {{ date_output.start }}
+   - debug: 
+       msg: The command end time is {{ date_output.end }}
+   - debug: 
+       msg: The command return code is {{ date_output.rc }}

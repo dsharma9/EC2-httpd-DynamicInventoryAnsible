@@ -1,0 +1,11 @@
+
+############################################################
+############# Play 1: creating key, SG and EC2##############
+---
+- name: creating key group and hosts
+  hosts: localhost
+  vars_files:
+      - /root/ansible-playbook/roles/key_group_host/vars/access.key
+  roles:
+    - role: key_group_host
+

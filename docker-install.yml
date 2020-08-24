@@ -1,0 +1,55 @@
+---
+- name: intalling docker with all the dependencies
+  hosts: web
+  tasks:
+    - name: configure yum repo for Docker
+      yum_repository:
+         name: docker-stable-ce
+         description: docker-repo
+         baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/ 
+         gpgcheck: 0
+         enabled: 1
+         name: docker-ce 
+
+    - name: coping web pages to the local system
+      copy:
+        src: /tmp/web/index.html 
+        dest: /tmp/index.html
+
+    - name: install container.io package 1.2.2-3 for latest docker 1.19
+      yum:
+        name: https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.2-3.3.el7.x86_64.rpm
+        state: present
+
+    - name: installing python3-pip package for docker docker-py dependency 
+      yum: 
+         name: python3-pip
+         state: present
+
+    - pip:
+        name: docker-py
+
+    - name: install docker-ce package
+      package: 
+        name: docker-ce
+        state: present
+    - name: restart docker service
+      service: 
+        name: docker
+        state: restarted
+
+    - name: Launching HTTPD Docker conatiner
+      docker_container:
+        name: my-web-server
+        image: httpd
+        volumes:
+          - /tmp/:/usr/local/apache2/htdocs
+        ports:
+          - "8080:80"
+
+    - name: Port binding
+      command: docker port my-web-server
+      register: x
+   
+    - debug: 
+        var: x 

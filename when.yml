@@ -1,0 +1,25 @@
+---
+ - name: Installilng HTTPD service to all hosts
+   hosts: web
+   vars: 
+     pname: "httpd"
+
+   tasks:
+    - name: installing httpd
+      yum: 
+        name: "{{ pname }}"
+        state: present
+      ignore_errors: yes
+      register: x
+    
+    - name: copying http file to the /var/www/html
+      copy: 
+        src: "/tmp/detail.txt"
+        dest: "/var/www/html/"
+      when: x.rc == 0
+
+    - name:  Restarting HTTPD service
+      service: 
+        name: httpd
+        state: started
+      when: x.rc == 0

@@ -1,0 +1,16 @@
+---
+- name: sending email using mail module 
+  hosts: localhost 
+  vars_files: 
+      - /root/ansible-playbook/pass.txt 
+  tasks: 
+     - name: Sending mail to dk.k21222@gmail.com from ds.kd0232@gmail.com
+       mail:
+         host: smtp.gmail.com
+         port: 587
+         username: "{{ uname }}"
+         password: "{{ pass }}"
+         subject: Ansible-vault
+         body: "Hello, This is Deepak Sharma from {{ ansible_hostname }}. How are you?" 
+         from: "{{ uname }}"
+         to: dk.k21222@gmail.com

@@ -1,0 +1,34 @@
+---
+- name: creating a ec2-host in AWS
+  hosts: localhost
+  vars_files:
+      - /root/ansible-playbook/ec2/ec2-vars.txt 
+      - /root/ansible-playbook/ec2/access.txt
+
+  tasks: 
+    - name: launchig ec2
+      ec2: 
+         region: "{{ region }}"
+         zone:  "{{ zone }}"
+         image: "{{ image }}"
+         key_name: "{{ key }}"
+         count: "{{ count }}"
+         group_id: "{{ sg_id }}" 
+         vpc_subnet_id: "{{ subnet_id }}"  
+         instance_type: "{{ machine_type }}"
+         instance_tags: 
+               name: web-server
+         assign_public_ip: yes
+         aws_access_key: "{{ access_key }}" 
+         aws_secret_key: "{{ secret_key }}"
+         state: present
+         wait: yes
+#         user_data: "{{ 'lookup('file', '/root/ansible-playbook/ec2/web.sh') }}"
+      
+      register: ec2
+  
+    - debug: 
+       var: ec2
+
+
+

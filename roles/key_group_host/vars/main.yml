@@ -1,0 +1,13 @@
+---
+# vars file for key_group_hostkey: "dynamic_key"
+key: "dynamic_key"
+vpc_id: "vpc-01e5823b731848aff"
+region: "us-east-1"
+zone: "us-east-1a"
+desc_of_sg: "This_is_dynamic_SG"
+sg_name: "sg_for_Dynamic_inventory_ec2_hosts"
+sg_state: "present"
+image: "ami-02354e95b39ca8dec"
+subnet_id: "subnet-0719c0171e8271146"
+machine_type: "t2.micro"
+count: 1

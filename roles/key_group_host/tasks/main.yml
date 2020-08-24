@@ -1,0 +1,67 @@
+---
+# tasks file for key_group_host
+
+################################################################
+########## Creating Key pair ##########################
+    - name: Creating Key-Pair using Controler Node pem key.
+      ec2_key:
+        region: "{{ region }}"
+        name: "{{ key }}"
+        key_material: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
+
+################################################################
+########## Creating Security Group ##########################
+    - name: Creating Security Group and allwing 8080,80 and 22 port.
+      ec2_group:
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ region }}"
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        description: "{{ desc_of_sg }}"
+        name: "{{ sg_name }}"
+        state: "{{ sg_state }}"
+        tags:
+           name: web_server
+           env: dev
+        rules:
+          - proto: tcp
+            ports:
+              - 80
+              - 8123
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all on port 8080 and 80.
+          - proto: tcp
+            from_port: 80
+            to_port: 8080
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: icmp
+            from_port: 8
+            to_port: -1
+            cidr_ip: 0.0.0.0/0
+
+
+################################################################
+########## Launching EC2 host ##########################
+    - name: Launching EC2 host 
+      ec2:
+         region: "{{ region }}"
+         zone:  "{{ zone }}"
+         image: "{{ image }}"
+         key_name: "{{ key }}"
+         count: "{{ count }}"
+         group: "{{ sg_name }}"
+         vpc_subnet_id: "{{ subnet_id }}"
+         instance_type: "{{ machine_type }}"
+         instance_tags:
+               name: web-server
+         assign_public_ip: yes
+         aws_access_key: "{{ access_key }}"
+         aws_secret_key: "{{ secret_key }}"
+         state: present
+         
+ 

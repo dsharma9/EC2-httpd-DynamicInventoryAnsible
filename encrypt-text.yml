@@ -1,0 +1,9 @@
+---
+- name: checking encrypt sting without password
+  hosts: localhost
+  vars_files: 
+      - /root/ansible-playbook/encrypt-text.txt 
+  tasks: 
+    - debug: 
+        var: uname  
+

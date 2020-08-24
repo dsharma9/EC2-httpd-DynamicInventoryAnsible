@@ -1,0 +1,97 @@
+---
+# tasks file for webserver
+
+################################################################
+########## Installing python-pip package  ##########################
+
+    - name: Installing python-pip package
+      package:
+         name: "python-pip"
+         state: present
+
+################################################################
+########## Installing boto and boto3 SDK  ##########################
+
+    - name: Installing boto and boto3 SDK
+      command:
+         cmd: pip install boto boto3
+
+
+################################################################
+########## Collect ec2-info using ec2-instance module ##########################
+    - name: collecting existing ec2 hosts detail and creating deynamic host inventory
+      ec2_instance_info:
+         aws_access_key: "{{ access_key }}"
+         aws_secret_key: "{{ secret_key }}"
+         region: "{{ region }}"
+      register: ec2info
+
+    - debug:
+        var: ec2info.instances[0].private_ip_address
+
+
+################################################################
+########## Installing HTTPD service  ##########################
+
+    - name: installing httpd web server
+      package:
+         name: "{{ pkg }}"
+         state: present
+      when: ansible_os_family == "RedHat"
+      register: httpd_status
+
+
+
+################################################################
+########## Makcking custome documentRoot ##########################
+    - name: create dir /var/www/deepak
+      file:
+        state: directory
+        dest: "{{ docRoot }}"
+      register: dir
+
+
+
+################################################################
+########## Collect ec2-info using ec2-instance module ##########################
+    - name: collecting existing ec2 hosts detail and creating deynamic host inventory
+      ec2_instance_info:
+         aws_access_key: "{{ access_key }}"
+         aws_secret_key: "{{ secret_key }}"
+         region: "{{ region }}"
+      register: ec2info
+
+    - debug:
+        var: ec2info.instances[0].public_ip_address
+
+
+
+################################################################
+########## Makcking custome httpd config file ##########################
+    - name: coping conf file
+      template:
+        src: "{{ srcHttpdConf }}"
+        dest: "{{ destHttpdConf }}"
+        mode: 0666
+      register: conf
+      when: httpd_status.rc == 0
+      notify: restart httpd  
+
+################################################################
+########## Coping web URL online ##########################
+    - name: copy webpage from url
+      get_url:
+         url: "{{ url }}"
+         dest: "{{ downWebPageTo }}"
+         mode: 0666
+      when: dir.failed == false
+      tags: download-web-pages
+      notify: restart httpd
+
+################################################################
+########## Starting HTTPD service ##########################
+    - name: starting HTTPD service
+      service: 
+        name: httpd
+        state: started
+

@@ -1,0 +1,28 @@
+---
+ - name: Installilng HTTPD service to all hosts
+   hosts: master
+   vars: 
+      pkg: httpd
+
+   tasks:
+    - name: installing httpd
+      yum: 
+        name: "{{ pkg }}"
+        state: present
+      ignore_errors: yes
+      register: error
+ 
+    - name: copying http file to the /var/www/html
+      copy: 
+        src: "/tmp/index.html"
+        dest: "/var/www/html/"
+      
+
+    - name:  Restarting HTTPD service
+      service: 
+        name: httpd
+        state: started
+    - debug: 
+        var: error
+    - debug: 
+        var: error.rc

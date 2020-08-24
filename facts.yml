@@ -1,0 +1,62 @@
+---
+- name: checking runtime infor fo the managed host
+  hosts: ansible-slave1
+  gather_facts: yes
+  tasks:
+    - debug:
+        var: ansible_memory_mb
+
+    - debug:
+        var: ansible_memory_mb['real']
+    - debug:
+        var: ansible_memory_mb['real']['free']
+    - debug:
+        var: ansible_enp0s3['ipv4']
+    - debug:
+        var: ansible_enp0s3['ipv4']['address']
+
+    - debug:
+        var: ansible_processor[2]
+
+    - debug:
+        var: ansible_processor_cores
+
+    - debug:
+        var: ansible_processor_count
+
+    - debug:
+        var: ansible_swapfree_mb
+
+    - debug:
+        var: ansible_swaptotal_mb
+
+    - debug:
+        var: ansible_uptime_seconds
+
+
+    - debug:
+        var: ansible_selinux['status']
+
+
+    - debug:
+        var: ansible_distribution
+
+
+    - debug:
+        var: ansible_distribution_version
+
+    - debug:
+        var: 
+
+    - debug:
+        var: 
+
+    - debug:
+        var: ansible_devices['sda']['partitions']['sda2']['size'] 
+
+    - debug:
+        var: ansible_devices['sda']['partitions']
+
+    - debug:
+        var: ansible_devices['sr0']['sectorsize']
+

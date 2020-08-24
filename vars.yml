@@ -1,0 +1,30 @@
+---
+ - name: Installilng HTTPD service to all hosts
+   hosts: web
+   vars: 
+     pkg: httpd
+     myName: "Deepak Sharma"
+     myID: 232
+ 
+   tasks:
+    - name: installing httpd
+      yum: 
+        name: "{{ pkg }}"
+        state: present
+    
+    - name: copying http file to the /var/www/html
+      copy: 
+#        src: "/tmp/"
+        content: "This is {{ myName }}"
+        dest: "/var/www/html/i.html"
+
+    - name:  Restarting HTTPD service
+      service: 
+        name: httpd
+        state: started
+  
+    - debug:
+        msg: My name is {{ myName }}
+
+    - debug:
+        msg: My name ID {{ myID }}

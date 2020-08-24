@@ -1,0 +1,16 @@
+---
+- name: creating lvm
+  hosts: web
+  vars: 
+     vg_name: "mini-vg"
+     lv_name: "mini-lv1"
+
+  tasks: 
+   - name: dispaly the available partitions
+     lvol:
+       vg: "{{ vg_name }}"
+       lv: "{{ lv_name }}"
+       size: 1g
+       pvs: /dev/sdb,/dev/sdc
+       state: present
+       active: yes

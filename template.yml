@@ -1,0 +1,24 @@
+---
+- name: template example
+  hosts: all
+  vars: 
+   - myName: "Deepak Sharma"
+   - myFrnd: "Mini" 
+   - msg: "Bhalo Basi"
+
+  tasks: 
+   - name: assigning variables using tempelate
+     template:
+         src: "/root/ansible-playbook/detail.txt" 
+         dest: "/tmp/"
+         group: "ansible"
+         mode: 777
+         owner: "ansible"
+     register: m
+
+
+
+   - name: printing content of template module
+     debug: 
+       var: m
+     

@@ -1,0 +1,13 @@
+---
+- name: checking vault 
+  hosts: localhost
+  vars_files:
+      - /root/ansible-playbook/var3.txt
+     
+  tasks: 
+    - debug: 
+         var: myname
+    - debug: 
+         var: myid 
+
+

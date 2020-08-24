@@ -1,0 +1,16 @@
+---
+- name: fetching public IP and private IP
+  hosts: all
+  vars_files:
+    - /root/ansible-playbook/roles/key_group_host/vars/access.key 
+    - /root/ansible-playbook/roles/key_group_host/vars/main.yml
+  tasks: 
+    - name: collecting existing ec2 hosts detail and creating deynamic host inventory
+      ec2_instance_info:
+         aws_access_key: "{{ access_key }}"
+         aws_secret_key: "{{ secret_key }}"
+         region: "{{ region }}"
+      register: ec2info
+
+    - debug:
+        var: ec2info

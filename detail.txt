@@ -1,0 +1,3 @@
+My name is {{ myName }}.
+My Friend's name is {{ myFrnd }}.
+What I've to say to my Frnd {{ msg }}.
