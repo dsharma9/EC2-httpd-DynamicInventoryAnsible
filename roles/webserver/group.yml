@@ -1,0 +1,6 @@
+---
+- name: fetchign info
+  hosts: tag_name_web_server 
+  tasks: 
+    - debug: 
+         var: groups['tag_name_web_server']

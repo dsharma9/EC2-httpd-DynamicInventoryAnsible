@@ -1,0 +1,6 @@
+---
+# vars file for webserver
+lb_pkg: "haproxy"
+region: "us-east-1"
+src: "/root/ansible-playbook/roles/loadbalancer/templates/haproxy.cfg" 
+dest: "/etc/haproxy"

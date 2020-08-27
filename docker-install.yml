@@ -1,6 +1,6 @@
 ---
 - name: intalling docker with all the dependencies
-  hosts: web
+  hosts: docker 
   tasks:
     - name: configure yum repo for Docker
       yum_repository:
@@ -14,7 +14,8 @@
     - name: coping web pages to the local system
       copy:
         src: /tmp/web/index.html 
-        dest: /tmp/index.html
+        dest: /web/index.html
+        mode: 0666
 
     - name: install container.io package 1.2.2-3 for latest docker 1.19
       yum:
@@ -43,11 +44,11 @@
         name: my-web-server
         image: httpd
         volumes:
-          - /tmp/:/usr/local/apache2/htdocs
+          - /web/:/usr/local/apache2/htdocs
         ports:
           - "8080:80"
 
-    - name: Port binding
+    - name: Port binding information
       command: docker port my-web-server
       register: x
    

@@ -5,7 +5,7 @@
 - name: creating key group and hosts
   hosts: localhost
   vars_files:
-      - /root/ansible-playbook/roles/key_group_host/vars/access.key
+      - /root/ansible-playbook/roles/access.key
   roles:
     - role: key_group_host
 

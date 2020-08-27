@@ -58,7 +58,7 @@
          vpc_subnet_id: "{{ subnet_id }}"
          instance_type: "{{ machine_type }}"
          instance_tags:
-               name: web-server
+               name: "{{ host_name }}"
          assign_public_ip: yes
          aws_access_key: "{{ access_key }}"
          aws_secret_key: "{{ secret_key }}"

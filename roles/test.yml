@@ -1,0 +1,10 @@
+---
+- name: testing tag name 
+  hosts: tag_name_lb 
+  tasks: 
+  - name: checking connectivity
+    ping: 
+       data: "ya its workign"
+    register: ping
+  - debug: 
+      var: ping

@@ -1,0 +1,8 @@
+---
+- name: Configuring LB 
+  hosts: tag_name_lb
+  become: true
+  vars_files:
+      - /root/ansible-playbook/roles/access.key
+  roles: 
+    - role: loadbalancer 

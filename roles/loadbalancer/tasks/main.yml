@@ -1,0 +1,63 @@
+---
+# tasks file for webserver
+
+################################################################
+########## Installing python-pip package  ##########################
+
+    - name: Installing python-pip package
+      package:
+         name: "python-pip"
+         state: present
+
+################################################################
+########## Installing boto and boto3 SDK  ##########################
+
+    - name: Installing boto and boto3 SDK
+      command:
+         cmd: pip install boto boto3
+
+
+################################################################
+########## Collect ec2-info of haproxy server using ec2_instance_info: module ##########################
+    - name: collecting existing ec2 haproxy host detail  
+      ec2_instance_info:
+         aws_access_key: "{{ access_key }}"
+         aws_secret_key: "{{ secret_key }}"
+         region: "{{ region }}"
+      register: ec2info
+
+    - debug:
+        var: ec2info.instances
+
+
+################################################################
+########## Installing  Haproxy service  ##########################
+
+    - name: installing haproxy service
+      package:
+         name: "{{ lb_pkg }}"
+         state: present
+      when: ansible_os_family == "RedHat"
+      notify: lb_restart
+    
+
+################################################################
+########## copying haproyx.conf file  ##########################
+    - name: Coping haproxy.conf file in /etc/haproxy folder
+      template: 
+          src: "{{ src }}" 
+          dest: "{{ dest }}"
+          mode: 0666
+      register: haproxy_conf
+
+    - debug: 
+        var: haproxy_conf
+
+
+################################################################
+########## Starting Haproxy service ##########################
+    - name: starting Haproxy service
+      service: 
+        name: haproxy
+        state: started
+

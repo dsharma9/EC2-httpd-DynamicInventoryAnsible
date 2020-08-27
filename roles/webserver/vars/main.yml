@@ -6,15 +6,8 @@ docRoot: "/var/www/deepak/"
 srcHttpdConf: "/root/ansible-playbook/roles/webserver/templates/local.conf"
 destHttpdConf: "/etc/httpd/conf.d/deepak.conf"
 downWebPageTo: "/var/www/deepak/index.html"
-http_port: 8123
+http_port: 8080
 key: "dynamic_key"
-vpc_id: "vpc-01e5823b731848aff"
+vpc_id: "vpc-0783583788aea562b"
 region: "us-east-1"
-zone: "us-east-1a"
-desc_of_sg: "This_is_dynamic_SG"
-sg_name: "sg_for_Dynamic_inventory_ec2_hosts"
-sg_state: "present"
-image: "ami-02354e95b39ca8dec"
-subnet_id: "subnet-0719c0171e8271146"
-machine_type: "t2.micro"
-count: 1
+

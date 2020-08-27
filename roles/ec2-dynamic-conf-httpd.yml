@@ -3,9 +3,9 @@
 ########################################################################
 #############  Deploying HTTPD service on EC2 host ##############
 - name: Configuring web server on the ec2-host dynamically
-  hosts: all 
+  hosts: tag_name_web_server 
   become: true
   vars_files:
-      - /root/ansible-playbook/roles/key_group_host/vars/access.key
+      - /root/ansible-playbook/roles/access.key
   roles: 
     - role: webserver
